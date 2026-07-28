@@ -107,6 +107,37 @@
             background-color: #f87171;
             color: #09090b;
         }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1); 
+            color: #10b981;
+            border: 1px solid #10b981;
+            padding: 14px 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #09090b;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            color: #fafafa;
+            font-size: 15px;
+            transition: all 0.3s;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -115,6 +146,12 @@
     
     <a href="{{ route('siswa.create') }}" class="btn-tambah">Tambah Siswa</a>
     
+    @if (session('success'))
+        <div class="alert-success">
+            ✅ {{ session('success') }}
+        </div>
+    @endif
+
     <div class="table-container">
         <table>
             <tr>
@@ -128,7 +165,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $sws->nama }}</td>
-                <td>{{ $sws->kelas }}</td>
+                <td>{{ $sws->kelas->nama_kelas }}</td>
                 
                 <td>
                     <a href="{{ route('siswa.edit', $sws->id) }}" class="btn-edit">Edit</a>

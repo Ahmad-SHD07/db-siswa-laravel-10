@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Models\kelas;
 
 class SiswaController extends Controller
 {
     public function index()
     {
-        $siswa = Siswa::all();
+        $siswa = Siswa::with('kelas')->get();
         return view('siswa.index', compact('siswa'));
     }
 
     public function create()
     {
-        return view('siswa.create');
+        $kelas = Kelas::all();
+        return view('siswa.create', compact('kelas'));
     }
 
     public function store(Request $request)
@@ -23,7 +25,7 @@ class SiswaController extends Controller
         // Proses validasi
         $request->validate([
             'nama' => 'required|min:2', // Wajib di isi minimal 2 huruf
-            'kelas' => 'required' // Wajib di isi
+            'kelas_id' => 'required' // Wajib di isi
         ], [
             // Pesan error custom
             'nama.required' => 'Nama siswa wajib diisi',
@@ -32,7 +34,7 @@ class SiswaController extends Controller
         ]);
 
         Siswa::create($request->all());
-        return redirect()->route('siswa.index');
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil ditambahkan!');
     }
 
     public function show(string $id)
@@ -43,7 +45,8 @@ class SiswaController extends Controller
     public function edit(string $id)
     {
         $siswa = Siswa::findOrFail($id);
-        return view('siswa.edit', compact('siswa'));
+        $kelas = Kelas::all();
+        return view('siswa.edit', compact('siswa', 'kelas'));
     }
 
     /**
@@ -53,11 +56,11 @@ class SiswaController extends Controller
     {
         $request->validate([
             'nama' => 'required|min:2',
-            'kelas' => 'required',
+            'kelas_id' => 'required',
         ], [
             'nama.required' => "Nama siswa wajib diisi",
             'nama.min' => 'Nama siswa minimal harus 2 huruf',
-            'kelas.required' => 'Kelas wajib diisi'
+            'kelas_id.required' => 'Kelas wajib diisi'
         ]);
 
         // Cari dan update data kalau sudah lolos
@@ -65,9 +68,9 @@ class SiswaController extends Controller
 
         $siswa->update([
             'nama' => $request->nama,
-            'kelas' => $request->kelas
+            'kelas_id' => $request->kelas_id
         ]);
-        return redirect()->route('siswa.index');
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diupdate');
     }
 
     /**
@@ -77,6 +80,6 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
         $siswa->delete();
-        return redirect()->route('siswa.index');
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil dihapus!');
     }
 }

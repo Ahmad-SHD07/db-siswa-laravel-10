@@ -115,6 +115,26 @@
             display: block;
             font-weight: 500;
         }
+
+                .select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #09090b;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            color: #fafafa;
+            font-size: 15px;
+            transition: all 0.3s;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);
+        }
+
     </style>
 </head>
 <body>
@@ -137,7 +157,17 @@
                 
                 <div class="form-group">
                     <label>Kelas</label>
-                    <input type="text" name="kelas" required placeholder="Contoh: 11 RPL 1">
+                    <select name="kelas_id">
+                        <option value="">-- Pilih Kelas --</option>
+                        @foreach ($kelas as $kls)
+                            <option value="{{ $kls->id }}" {{ old('kelas_id') == $kls->id ? 'selected' : '' }}>
+                                {{ $kls->nama_kelas }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kelas_id')
+                        <span class="text-error">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="button-group">
