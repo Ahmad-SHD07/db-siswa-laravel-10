@@ -20,6 +20,17 @@ class SiswaController extends Controller
 
     public function store(Request $request)
     {
+        // Proses validasi
+        $request->validate([
+            'nama' => 'required|min:2', // Wajib di isi minimal 2 huruf
+            'kelas' => 'required' // Wajib di isi
+        ], [
+            // Pesan error custom
+            'nama.required' => 'Nama siswa wajib diisi',
+            'nama.min' => 'Nama siswa minimal harus 2 huruf!',
+            'kelas.required' => 'Kelas wajib diisi'
+        ]);
+
         Siswa::create($request->all());
         return redirect()->route('siswa.index');
     }
@@ -40,8 +51,22 @@ class SiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'nama' => 'required|min:2',
+            'kelas' => 'required',
+        ], [
+            'nama.required' => "Nama siswa wajib diisi",
+            'nama.min' => 'Nama siswa minimal harus 2 huruf',
+            'kelas.required' => 'Kelas wajib diisi'
+        ]);
+
+        // Cari dan update data kalau sudah lolos
         $siswa = Siswa::FindOrFail($id);
-        $siswa->updated($request->all());
+
+        $siswa->update([
+            'nama' => $request->nama,
+            'kelas' => $request->kelas
+        ]);
         return redirect()->route('siswa.index');
     }
 

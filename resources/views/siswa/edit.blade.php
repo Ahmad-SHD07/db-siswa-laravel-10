@@ -104,6 +104,14 @@
         .btn-batal:hover {
             background-color: #27272a; 
         }
+
+        .text-error{
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 6px;
+            display: block;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -119,13 +127,20 @@
                 <div class="form-group">
                     <label>Nama Lengkap</label>
                     <!-- Menampilkan nama lama dari database di dalam atribut value -->
-                    <input type="text" name="nama" value="{{ $siswa->nama }}" required>
+                    <input type="text" name="nama" value="{{ old('nama', $siswa->nama) }}" required>
+                    @error('nama')
+                        <span class="text-error">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
                     <label>Kelas</label>
                     <!-- Menampilkan kelas lama dari database di dalam atribut value -->
-                    <input type="text" name="kelas" value="{{ $siswa->kelas }}" required>
+                    <input type="text" name="kelas" value="{{ old('kelas', $siswa->kelas) }}" required>
+                    @error('nama')
+                        <span class="text-error">{{ $message }}</span>
+                    @enderror
+
                 </div>
                 
                 <div class="button-group">

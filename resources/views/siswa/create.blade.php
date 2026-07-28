@@ -107,6 +107,14 @@
         .btn-batal:hover {
             background-color: #27272a;
         }
+
+        .text-error{
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 6px;
+            display: block;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -120,7 +128,11 @@
                 
                 <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" name="nama" required placeholder="Masukkan nama siswa...">
+                    <input type="text" name="nama" value="{{ old('nama') }}" required placeholder="Masukkan nama siswa...">
+
+                    @error('nama')
+                        <span class="text-error">{{ $message }}</span>
+                    @enderror
                 </div>
                 
                 <div class="form-group">
