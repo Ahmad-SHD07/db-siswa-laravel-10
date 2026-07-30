@@ -8,10 +8,19 @@ use App\Models\kelas;
 
 class SiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $siswa = Siswa::with('kelas')->get();
-        return view('siswa.index', compact('siswa'));
+        $query = Siswa::with('kelas');
+
+        if ($request->has('kelas_id') && $request->kelas_id != '') {
+            $query->where('kelas_id', $request->kelas_id);
+        }
+
+        $siswa = $query->paginate(10)->appends($request->all());
+
+        $kelas = Kelas::all();
+
+        return view('siswa.index', compact('siswa', 'kelas'));
     }
 
     public function create()

@@ -145,6 +145,27 @@
     <h2>Data Siswa</h2>
     
     <a href="{{ route('siswa.create') }}" class="btn-tambah">Tambah Siswa</a>
+
+    <div style="margin-bottom: 20px; margin-top: 15px;">
+        <form action="{{ route('siswa.index') }}" method="GET" style="display: flex; gap: 10px; align-items: center;">
+            <label style="color: #a1a1aa;">Filter Kelas:</label>
+            <select name="kelas_id" style="padding: 8px; border-radius: 6px; background: #18181b; color: white; border: 1px solid #3f3f46;">
+                <option value="">-- Tampilkan Semua --</option>
+                @foreach ($kelas as $kls)
+                    <!-- Logika agar opsi yang dipilih tetap 'terpilih' setelah tombol ditekan -->
+                    <option value="{{ $kls->id }}" {{ request('kelas_id') == $kls->id ? 'selected' : '' }}>
+                        {{ $kls->nama_kelas }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit" style="padding: 8px 15px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">Cari</button>
+            
+            <!-- Tombol Reset Filter -->
+            @if(request('kelas_id'))
+                <a href="{{ route('siswa.index') }}" style="color: #f87171; text-decoration: none; font-size: 14px;">Reset</a>
+            @endif
+        </form>
+    </div>
     
     @if (session('success'))
         <div class="alert-success">
@@ -179,6 +200,10 @@
             </tr>
             @endforeach
         </table>
+
+        <div style="margin-top: 20px;">
+            {{ $siswa->links() }}
+        </div>
     </div>
 
 </body>
